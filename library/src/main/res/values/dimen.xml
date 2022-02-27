@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="tooltip_overlay_offset">10dp</dimen>
+    <dimen name="tooltip_margin_">10dp</dimen>
+    <dimen name="tooltip_padding">8dp</dimen>
+    <dimen name="tooltip_arrow_width">30dp</dimen>
+    <dimen name="tooltip_arrow_height">15dp</dimen>
+    <dimen name="tooltip_animation_padding">4dp</dimen>
+
+    <dimen name="price_text_size_big">22sp</dimen>
+    <dimen name="price_text_size_normal">15sp</dimen>
+</resources>

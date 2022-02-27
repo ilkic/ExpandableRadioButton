@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ExpandableRadioButton">
+        <attr name="erb_theme" format="reference" />
+        <attr name="erb_titleText" format="string|reference" />
+        <attr name="erb_titleStyle_active" format="reference" />
+        <attr name="erb_titleStyle_default" format="reference" />
+        <attr name="erb_isInfoButtonEnabled" format="boolean" />
+        <attr name="erb_isAnimationEnabled" format="boolean" />
+        <attr name="erb_isRadioButtonSelected" format="boolean" />
+        <attr name="erb_infoText" format="string|reference" />
+        <attr name="erb_expandableTitleText" format="string|reference" />
+        <attr name="erb_expandableSubtitleText" format="string|reference" />
+        <attr name="erb_expandableImageSrc" format="reference" />
+        <attr name="erb_canExpand" format="boolean" />
+    </declare-styleable>
+</resources>

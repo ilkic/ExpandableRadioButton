@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="titleTextColorActive">#012850</color>
+    <color name="titleTextColorDefault">#666f85</color>
+    <color name="borderColor">#dee3ed</color>
+    <color name="tooltipColor">#909090</color>
+</resources>
