@@ -9,9 +9,7 @@
         <attr name="erb_isAnimationEnabled" format="boolean" />
         <attr name="erb_isRadioButtonSelected" format="boolean" />
         <attr name="erb_infoText" format="string|reference" />
-        <attr name="erb_expandableTitleText" format="string|reference" />
-        <attr name="erb_expandableSubtitleText" format="string|reference" />
-        <attr name="erb_expandableImageSrc" format="reference" />
         <attr name="erb_canExpand" format="boolean" />
+        <attr name="erb_expandLayoutId" format="reference"/>
     </declare-styleable>
 </resources>

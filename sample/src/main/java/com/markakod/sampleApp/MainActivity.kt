@@ -2,6 +2,8 @@ package com.markakod.sampleApp
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
@@ -44,6 +46,13 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        val expandableViewImageView = radioButton.expandableView?.findViewById<ImageView>(R.id.expandableViewImageView)
+        val expandableViewTitleTextView = radioButton.expandableView?.findViewById<TextView>(R.id.expandableViewTitleTextView)
+        val expandableViewSubtitleTextView = radioButton.expandableView?.findViewById<TextView>(R.id.expandableViewSubtitleTextView)
+        expandableViewImageView?.setImageResource(R.mipmap.modem)
+        expandableViewTitleTextView?.text = "E89"
+        expandableViewSubtitleTextView?.text = "A54"
+
         val exampleList = mutableListOf<Example>()
         for (i in 0..10) {
             exampleList.add(
@@ -60,7 +69,7 @@ class MainActivity : AppCompatActivity() {
         val itemList = mutableListOf<ExampleDescriptor>()
         for (i in 0 until exampleList.size) {
             val item = ExampleDescriptor(exampleList[i])
-            item.expandableImage = ContextCompat.getDrawable(this, R.mipmap.modem)
+            item.imageDrawable = ContextCompat.getDrawable(this, R.mipmap.modem)
             itemList.add(item)
         }
 
@@ -68,6 +77,7 @@ class MainActivity : AppCompatActivity() {
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
 
         val adapter = ExpandableRadioItemRecyclerAdapter(
+            ExampleExpandableViewBinder(),
             ExampleDiffCallback()
         )
         adapter.onItemSelectListener =

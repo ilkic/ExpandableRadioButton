@@ -20,15 +20,15 @@ data class Example(
     val description: String?
 ) {
     fun getPriceAsSpannable(): SpannableStringBuilder {
-        val spannableString = SpannableStringBuilder("89,90 TL")
+        val spannableString = SpannableStringBuilder("8,90 TL")
         spannableString.setSpan(
-            RelativeSizeSpan(2f),
+            RelativeSizeSpan(1.57f),
             0,
-            spannableString.length,
+            1,
             SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE
         )
         spannableString.setSpan(
-            RelativeSizeSpan(0.50f),
+            RelativeSizeSpan(1f),
             2,
             spannableString.length,
             Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
@@ -44,8 +44,6 @@ data class ExampleDescriptor(val model: Example) :
     override var titleText: CharSequence = model.title
     override var isInfoButtonEnabled: Boolean = model.description != null
     override var infoText: CharSequence? = model.description
-    override var expandableTitleText: CharSequence? = model.getPriceAsSpannable().toSpanned()
-    override var expandableSubtitleText: CharSequence? = model.campaignText
-    override var expandableImage: Drawable? = null
     override var canExpand: Boolean = model.campaignText != null
+    var imageDrawable: Drawable? = null
 }

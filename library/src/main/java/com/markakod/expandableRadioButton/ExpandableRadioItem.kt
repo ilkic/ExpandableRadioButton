@@ -10,8 +10,5 @@ interface ExpandableRadioItem {
     var titleText: CharSequence
     var isInfoButtonEnabled: Boolean
     var infoText: CharSequence?
-    var expandableTitleText: CharSequence?
-    var expandableSubtitleText: CharSequence?
-    var expandableImage: Drawable?
     var canExpand: Boolean
 }

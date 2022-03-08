@@ -19,7 +19,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import com.markakod.expandableRadioButton.tooltip.ArrowDrawable
 import com.markakod.expandableRadioButton.tooltip.Tooltip
 
@@ -72,7 +71,7 @@ class ExpandableRadioButton : ConstraintLayout {
             statusImageView?.isSelected = value
             if (value) {
                 if (canExpand) {
-                    expandableView?.visibility = View.VISIBLE
+                    expandableViewContainer?.visibility = View.VISIBLE
                 }
                 titleStyleActive?.let {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -83,7 +82,7 @@ class ExpandableRadioButton : ConstraintLayout {
                 }
             } else {
                 if (canExpand) {
-                    expandableView?.visibility = View.GONE
+                    expandableViewContainer?.visibility = View.GONE
                 }
                 titleStyleDefault?.let {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -115,13 +114,24 @@ class ExpandableRadioButton : ConstraintLayout {
 
     var canExpand: Boolean = true
         set(value)  {
-          field = value
+            field = value
             if (value) {
-                expandableView?.visibility = if(isRadioButtonSelected) View.VISIBLE else View.GONE
+                expandableViewContainer?.visibility = if(isRadioButtonSelected) View.VISIBLE else View.GONE
             } else {
-                expandableView?.visibility = View.GONE
+                expandableViewContainer?.visibility = View.GONE
             }
         }
+
+    var expandableView: ViewGroup? = null
+        set (value) {
+            field = value
+            if (value == null) {
+                expandableViewContainer?.removeAllViews()
+            } else {
+                expandableViewContainer?.addView(expandableView)
+            }
+        }
+
 
     private var titleStyleActive: Int? = null
     private var titleStyleDefault: Int? = null
@@ -129,7 +139,7 @@ class ExpandableRadioButton : ConstraintLayout {
     private var statusImageView: ImageView? = null
     private var titleTextView: TextView? = null
     private var infoImageButton: ImageButton? = null
-    private var expandableView: ViewGroup? = null
+    internal var expandableViewContainer: ViewGroup? = null
     private var expandableViewTitleTextView: TextView? = null
     private var expandableViewSubtitleTextView: TextView? = null
     private var expandableViewImageView: ImageView? = null
@@ -199,16 +209,20 @@ class ExpandableRadioButton : ConstraintLayout {
                 R.styleable.ExpandableRadioButton_erb_isRadioButtonSelected,
                 false
             )
-            expandableTitleText =
-                typedArray.getString(R.styleable.ExpandableRadioButton_erb_expandableTitleText)
-            expandableSubtitleText =
-                typedArray.getString(R.styleable.ExpandableRadioButton_erb_expandableSubtitleText)
-            val imageResId = typedArray.getResourceId(
-                R.styleable.ExpandableRadioButton_erb_expandableImageSrc,
-                0
+
+            val layoutId = typedArray.getResourceId(
+                R.styleable.ExpandableRadioButton_erb_expandLayoutId,
+                -1
             )
-            if (imageResId > 0)
-                expandableImageDrawable = ContextCompat.getDrawable(context, imageResId)
+            if (layoutId != -1) {
+                val _expandableView = LayoutInflater.from(context).inflate(layoutId, expandableViewContainer, false)
+                if (_expandableView is ViewGroup) {
+                    this.expandableView = _expandableView
+                } else {
+                    throw IllegalArgumentException("Expandable view must be extends from ViewGroup")
+                }
+
+            }
         } finally {
             typedArray.recycle()
         }
@@ -225,10 +239,8 @@ class ExpandableRadioButton : ConstraintLayout {
         statusImageView = findViewById(R.id.statusImageView)
         titleTextView = findViewById(R.id.titleTextView)
         infoImageButton = findViewById(R.id.infoImageButton)
-        expandableView = findViewById(R.id.expandableLayout)
-        expandableViewTitleTextView = findViewById(R.id.expandableViewTitleTextView)
-        expandableViewSubtitleTextView = findViewById(R.id.expandableViewSubtitleTextView)
-        expandableViewImageView = findViewById(R.id.expandableViewImageView)
+        expandableViewContainer = findViewById(R.id.expandableLayout)
+
 
         infoImageButton?.setOnClickListener {
             showTooltip()
@@ -287,9 +299,6 @@ class ExpandableRadioButton : ConstraintLayout {
         infoText = i.infoText
         isRadioButtonSelected = i.isSelected
         isInfoButtonEnabled = i.isInfoButtonEnabled
-        expandableTitleText = i.expandableTitleText
-        expandableSubtitleText = i.expandableSubtitleText
-        expandableImageDrawable = i.expandableImage
         canExpand = i.canExpand
     }
 

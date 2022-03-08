@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 
 class ExpandableRadioItemRecyclerAdapter<T: ExpandableRadioItem>(
+    val expandableViewBinder: ExpandableViewBinder<T>,
     di: DiffUtil.ItemCallback<T>
 ): ListAdapter<T, ExpandableRadioItemRecyclerAdapter.ViewHolder>(di),
     ExpandableRadioButton.OnItemSelectListener {
@@ -21,11 +22,14 @@ class ExpandableRadioItemRecyclerAdapter<T: ExpandableRadioItem>(
     var onItemSelectListener: OnItemSelectListener<T>? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.layout_recycler_item, parent, false))
+        val vh = ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.layout_recycler_item, parent, false))
+        vh.erb.expandableView = expandableViewBinder.onExpandableViewCreate(vh.erb.expandableViewContainer!!)
+        return vh
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getItem(position), this)
+        expandableViewBinder.onExpandableViewBind(holder.erb.expandableView, getItem(position))
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -56,7 +60,7 @@ class ExpandableRadioItemRecyclerAdapter<T: ExpandableRadioItem>(
 
     class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
         var erb: ExpandableRadioButton = view.findViewById(R.id.expandableRadioButton)
-        fun<T: ExpandableRadioItem> bind(item: T, onItemSelectListener: ExpandableRadioButton.OnItemSelectListener) {
+        fun <T: ExpandableRadioItem> bind(item: T, onItemSelectListener: ExpandableRadioButton.OnItemSelectListener) {
             erb.setItem(item)
             erb.onItemSelectListener = onItemSelectListener
         }
@@ -65,5 +69,10 @@ class ExpandableRadioItemRecyclerAdapter<T: ExpandableRadioItem>(
     interface OnItemSelectListener<T> {
         fun onExpandableRadioItemSelected(item: T)
         fun onExpandableRadioItemUnselected(item: T)
+    }
+
+    interface ExpandableViewBinder<T> {
+        fun onExpandableViewBind(view: ViewGroup?, item: T)
+        fun onExpandableViewCreate(parent: ViewGroup): ViewGroup?
     }
 }
